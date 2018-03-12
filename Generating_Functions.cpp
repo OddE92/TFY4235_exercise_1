@@ -72,7 +72,7 @@ void KochFractal::Generate_Square() {
 
 /**** GENERATES THE SEGMENT FOR THE kTH LEVEL ****/
 void KochFractal::Generate_Segment(int vectStartPos, int k) {
-	int deltaGrid = Generate_deltaGrid(k);
+	int deltaGrid = Generate_deltaGrid(n-k);
 	int deltaVect = Generate_deltaVect(k);
 	int i;
 
@@ -109,12 +109,9 @@ int KochFractal::Generate_deltaVect(int k) {
 
 /**** GENERATES THE STEP BETWEEN GRIDPOINTS FOR THE kTH LEVEL ****/
 int KochFractal::Generate_deltaGrid(int k) {
-	int i;
-	int deltaGrid = numGridPoints;
-	k = 0;
-	for (i = 0; i < k; i++) {
-		deltaGrid -= (int)pow(2, 2 * i + 1);
-	}
+	
+	int deltaGrid = pow(4, k);
+
 	return(deltaGrid);
 }
 
@@ -124,31 +121,38 @@ one for each direction of the segment****/
 int KochFractal::Generate_next_segment_point_right(int vectStartPos, int deltaVect, int deltaGrid, int i) {
 	switch (i) {
 	case 0:
-		vectPoints[vectStartPos + deltaVect].x += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x + deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'u';
 	break;
 	case 1: 
-		vectPoints[vectStartPos + deltaVect].y += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y + deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'r';
 	break;
 	case 2: 
-		vectPoints[vectStartPos + deltaVect].x += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x + deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'd';
 	break;
 	case 3: 
-		vectPoints[vectStartPos + deltaVect].y -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y - deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'd';
 	break;
 	case 4: 
-		vectPoints[vectStartPos + deltaVect].y -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y - deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'r';
 	break;
 	case 5: 
-		vectPoints[vectStartPos + deltaVect].x += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x + deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'u';
 	break;
 	case 6: 
-		vectPoints[vectStartPos + deltaVect].y += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y + deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'r';
 	break;
 	default: return(vectStartPos);
@@ -159,31 +163,38 @@ int KochFractal::Generate_next_segment_point_right(int vectStartPos, int deltaVe
 int KochFractal::Generate_next_segment_point_left(int vectStartPos, int deltaVect, int deltaGrid, int i) {
 	switch (i) {
 	case 0:
-		vectPoints[vectStartPos + deltaVect].x -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x - deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'd';
 		break;
 	case 1:
-		vectPoints[vectStartPos + deltaVect].y -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y - deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'l';
 		break;
 	case 2:
-		vectPoints[vectStartPos + deltaVect].x -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x - deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'u';
 		break;
 	case 3:
-		vectPoints[vectStartPos + deltaVect].y += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y + deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'u';
 		break;
 	case 4:
-		vectPoints[vectStartPos + deltaVect].y += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y + deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'l';
 		break;
 	case 5:
-		vectPoints[vectStartPos + deltaVect].x -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x - deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'd';
 		break;
 	case 6:
-		vectPoints[vectStartPos + deltaVect].y -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y - deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'l';
 		break;
 	default: return(vectStartPos);
@@ -194,31 +205,38 @@ int KochFractal::Generate_next_segment_point_left(int vectStartPos, int deltaVec
 int KochFractal::Generate_next_segment_point_up(int vectStartPos, int deltaVect, int deltaGrid, int i) {
 	switch (i) {
 	case 0:
-		vectPoints[vectStartPos + deltaVect].y += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y + deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'l';
 		break;
 	case 1:
-		vectPoints[vectStartPos + deltaVect].x -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x - deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'u';
 		break;
 	case 2:
-		vectPoints[vectStartPos + deltaVect].y += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y + deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'r';
 		break;
 	case 3:
-		vectPoints[vectStartPos + deltaVect].x += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x + deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'r';
 		break;
 	case 4:
-		vectPoints[vectStartPos + deltaVect].x += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x + deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'u';
 		break;
 	case 5:
-		vectPoints[vectStartPos + deltaVect].y += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y + deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'l';
 		break;
 	case 6:
-		vectPoints[vectStartPos + deltaVect].x -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x - deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'u';
 		break;
 	default: return(vectStartPos);
@@ -229,31 +247,38 @@ int KochFractal::Generate_next_segment_point_up(int vectStartPos, int deltaVect,
 int KochFractal::Generate_next_segment_point_down(int vectStartPos, int deltaVect, int deltaGrid, int i) {
 	switch (i) {
 	case 0:
-		vectPoints[vectStartPos + deltaVect].y -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y - deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'r';
 		break;
 	case 1:
-		vectPoints[vectStartPos + deltaVect].x += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x + deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'd';
 		break;
 	case 2:
-		vectPoints[vectStartPos + deltaVect].y -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y - deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'l';
 		break;
 	case 3:
-		vectPoints[vectStartPos + deltaVect].x -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x - deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'l';
 		break;
 	case 4:
-		vectPoints[vectStartPos + deltaVect].x -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x - deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'd';
 		break;
 	case 5:
-		vectPoints[vectStartPos + deltaVect].y -= deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y - deltaGrid;
 		vectPoints[vectStartPos + deltaVect].dir = 'r';
 		break;
 	case 6:
-		vectPoints[vectStartPos + deltaVect].x += deltaGrid;
+		vectPoints[vectStartPos + deltaVect].x = vectPoints[vectStartPos].x + deltaGrid;
+		vectPoints[vectStartPos + deltaVect].y = vectPoints[vectStartPos].y;
 		vectPoints[vectStartPos + deltaVect].dir = 'd';
 		break;
 	default: return(vectStartPos);
