@@ -6,7 +6,7 @@ using std::endl;
 
 /**** GENERATES CIRCUMFERENCE LENGTH FOR nTH ITERATION ****/
 long long int KochFractal::Generate_circumference_length(){
-	return((int)pow(2, 3*n+2));
+	return((int)pow(2, 3*n+2));				//Sets circumference to n+1'th level
 }//End Generate_Circumference_length
 
 /**** GENERATES NUMBER OF GRID POINTS FOR nTH ITERATION ****/
@@ -21,7 +21,7 @@ long long int KochFractal::Generate_number_of_grid_points() {
 	else if (n >= 1) {
 		GridPoints = 6;
 
-		for (int i = 1; i < n; i++) {
+		for (int i = 1; i < n + 1; i++) {			//Sets grid point to n+1'th level
 			GridPoints = 4 * GridPoints + 2;
 		}//End For
 	}
@@ -29,8 +29,19 @@ long long int KochFractal::Generate_number_of_grid_points() {
 		cout << "'n' is not valid." << endl;
 	}//End if
 
-	return(GridPoints);
+	return(GridPoints-2);
 }//End Generate_number_of_grid_points
+
+ /**** GENERATES THE STEP IN THE VECTOR FOR THE kTH LEVEL ****/
+int KochFractal::Generate_deltaVect(int k) {
+	return(circumference / (int)pow(2, 3 * k + 2));
+}
+
+/**** GENERATES THE STEP BETWEEN GRIDPOINTS FOR THE kTH LEVEL ****/
+int KochFractal::Generate_deltaGrid(int k) {
+	int deltaGrid = pow(4, k);
+	return(deltaGrid);
+}
 
  /**** GENERATES THE COMPLETE FRACTAL ****/
 void KochFractal::Generate_Fractal() {
@@ -67,7 +78,7 @@ void KochFractal::Generate_Square() {
 
 	vectPoints[3*deltaVect].x = 0;
 	vectPoints[3*deltaVect].y = -deltaGrid;
-	vectPoints[3*deltaVect].dir = 'r';
+	vectPoints[3*deltaVect].dir = 'u';
 }//End Generate_Square
 
 /**** GENERATES THE SEGMENT FOR THE kTH LEVEL ****/
@@ -102,22 +113,9 @@ void KochFractal::Generate_Segment(int vectStartPos, int k) {
 	}
 }
 
-/**** GENERATES THE STEP IN THE VECTOR FOR THE kTH LEVEL ****/
-int KochFractal::Generate_deltaVect(int k) {
-	return(circumference / (int)pow(2, 3 * k + 2));
-}
-
-/**** GENERATES THE STEP BETWEEN GRIDPOINTS FOR THE kTH LEVEL ****/
-int KochFractal::Generate_deltaGrid(int k) {
-	
-	int deltaGrid = pow(4, k);
-
-	return(deltaGrid);
-}
-
 /**** GENERATES THE NEXT POINT AND RETURNS THE NEXT vectStartPos ****/
 /**** There are four different version, 
-one for each direction of the segment****/
+one for each direction of the segment ****/
 int KochFractal::Generate_next_segment_point_right(int vectStartPos, int deltaVect, int deltaGrid, int i) {
 	switch (i) {
 	case 0:
@@ -288,3 +286,24 @@ int KochFractal::Generate_next_segment_point_down(int vectStartPos, int deltaVec
 
 /********** END OF NEXT POINT GENERATORS **********/
 /**************************************************/
+
+void KochFractal::create_grid_n(int k) {
+	if (k < n) {
+		cout << "k must be greater than n!" << endl;
+		return;
+	}
+		//Resizes the point coordinates to match n+1 level grid
+	for (int i = 0; i < vectPoints.size(); i++) {
+		vectPoints[i].x = vectPoints[i].x * pow(4, k-n) - 1;
+		vectPoints[i].y = vectPoints[i].y * pow(4, k - n) + numGridPoints - 1;
+
+		//+numGridPoints moves the fractal to y>0
+		//for k moves the fractal so that x<=0 and y<=0 for all points. 
+		for (int k = 0; k < n + 1; k++) {
+			int delta = Generate_deltaGrid(k);
+			vectPoints[i].x += delta;
+			vectPoints[i].y -= delta;
+		}
+
+	}//End for i
+}
